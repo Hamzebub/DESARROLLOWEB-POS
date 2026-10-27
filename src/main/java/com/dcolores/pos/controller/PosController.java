@@ -94,4 +94,11 @@ public class PosController {
         public String getPVenta() { return pVenta; }
         public String getEstado() { return estado; }
     }
+    
+ // 3. VISTA DE CATEGORIAS
+    @GetMapping("/categorias")
+    public String categorias() {
+        return "categorias";
+    }
+    
 }
