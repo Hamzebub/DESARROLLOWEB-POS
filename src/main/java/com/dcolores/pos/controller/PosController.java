@@ -11,7 +11,11 @@ import java.util.List;
 @Controller
 public class PosController {
 
-    // 1. VISTA DE LOGIN
+	@GetMapping("/")
+    public String redirigir() {
+        return "redirect:/login";
+    }
+	// 1. VISTA DE LOGIN
     @GetMapping("/login")
     public String mostrarLogin() {
         return "login";
