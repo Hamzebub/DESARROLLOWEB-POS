@@ -1,6 +1,6 @@
 package com.dcolores.pos.controller;
 
-import com.dcolores.pos.model.Categoria;
+import com.dcolores.pos.entity.Categoria;
 import com.dcolores.pos.repository.CategoriaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

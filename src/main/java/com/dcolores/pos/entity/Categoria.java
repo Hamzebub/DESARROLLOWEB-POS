@@ -1,4 +1,4 @@
-package com.dcolores.pos.model;
+package com.dcolores.pos.entity;
 
 import jakarta.persistence.*;
 
