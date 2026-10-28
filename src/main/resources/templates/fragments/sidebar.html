@@ -1,0 +1,69 @@
+
+<aside th:fragment="sidebar"
+       class="offcanvas-lg offcanvas-start sidebar"
+       tabindex="-1"
+       id="sidebarMenu"
+       aria-labelledby="sidebarLabel">
+
+    <div class="offcanvas-header border-bottom d-lg-none">
+        <h5 class="offcanvas-title" id="sidebarLabel">
+            D'Colores POS
+        </h5>
+        <button type="button"
+                class="btn-close"
+				data-bs-dismiss="offcanvas"
+				data-bs-target="#sidebarMenu"
+                aria-label="Cerrar menú"
+				
+				>
+        </button>
+    </div>
+
+    <div class="offcanvas-body p-0 d-flex flex-column">
+
+        <div class="brand d-flex align-items-center p-4">
+            <div class="brand-icon">D</div>
+            <h5 class="m-0 fw-bold">D'Colores</h5>
+        </div>
+
+        <nav class="nav flex-column mb-auto">
+
+            <a th:href="@{/menu}"
+               class="nav-link"
+               th:classappend="${seccion == 'dashboard'} ? ' active' : ''">
+                <i class="bi bi-grid me-2"></i>
+                Dashboard
+            </a>
+
+            <a th:href="@{/inventario}"
+               class="nav-link"
+               th:classappend="${seccion == 'inventario'} ? ' active' : ''">
+                <i class="bi bi-box-seam me-2"></i>
+                Inventario
+            </a>
+
+            <a th:href="@{/categorias}"
+               class="nav-link"
+               th:classappend="${seccion == 'categorias'} ? ' active' : ''">
+                <i class="bi bi-tags me-2"></i>
+                Categorías
+            </a>
+
+            <a th:href="@{/ventas}"
+               class="nav-link"
+               th:classappend="${seccion == 'ventas'} ? ' active' : ''">
+                <i class="bi bi-cart3 me-2"></i>
+                Ventas (POS)
+            </a>
+
+            <a th:href="@{/mermas}"
+               class="nav-link"
+               th:classappend="${seccion == 'mermas'} ? ' active' : ''">
+                <i class="bi bi-exclamation-triangle me-2"></i>
+                Mermas
+            </a>
+
+        </nav>
+
+    </div>
+</aside>
