@@ -5,6 +5,8 @@ import com.dcolores.pos.repository.CategoriaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
@@ -26,14 +28,15 @@ public class CategoriaController {
     }
 
     // Guarda la categoría en PostgreSQL
-    //@PostMapping("/categorias/guardar")
-    //public String guardarCategoria(
-    //        @ModelAttribute("nuevaCategoria") Categoria categoria) {
+    @PostMapping("/categorias/guardar")
+    public String guardarCategoria(
+            @ModelAttribute("nuevaCategoria") Categoria categoria) {
 
         // El ID se genera automáticamente al guardar.
-    //    categoria.setIdCategoria(null);
-    //    categoriaRepository.save(categoria);
-    //    return "redirect:/categorias";
-    //}
+        categoria.setIdCategoria(null);
+        categoria.setActivo(true);
+        categoriaRepository.save(categoria);
+        return "redirect:/categorias";
+    }
     
 }

@@ -53,25 +53,25 @@
                             <tr>
                                 <th>Código</th>
                                 <th>Nombre de categoría</th>
+                                <th>Descripción</th>
                                 <th>Estado</th>
-                                <th>Acciones</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <tr th:each="categoria : ${categorias}">
-                                <td th:text="${categoria.idCategoria}">1</td>
-                                <td th:text="${categoria.nombre}">Abarrotes</td>
+                                <td th:text="${categoria.idCategoria}"></td>
+                                <td th:text="${categoria.nombre}"></td>
+							   <td th:text="${categoria.descripcion}"></td>
                                 <td>
                                     <span class="badge"
                                           th:classappend="${categoria.activo} ? ' bg-success' : ' bg-danger'"
-                                          th:text="${categoria.activo} ? 'Activo' : 'Inactivo'">
-                                        Activo
+                                          th:text="${categoria.activo} ? 'Activo' : 'Inactivo'">                                       
                                     </span>
                                 </td>
                                 <td>
                                     <!-- Aquí puedes agregar los botones Editar y Eliminar -->
-                                    —
+                                    
                                 </td>
                             </tr>
 
