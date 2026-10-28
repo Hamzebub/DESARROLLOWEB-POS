@@ -99,10 +99,6 @@ public class PosController {
         public String getEstado() { return estado; }
     }
     
- // 3. VISTA DE CATEGORIAS
-    @GetMapping("/categorias")
-    public String categorias() {
-        return "categorias";
-    }
+
     
 }
