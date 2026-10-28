@@ -1,0 +1,98 @@
+
+body {
+    margin: 0;
+    background-color: #f4f6f9;
+    overflow-x: hidden;
+}
+
+.app-shell {
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    flex: 0 0 250px;
+    min-height: 100vh;
+    background-color: #fff !important;
+    border-right: 1px solid #e0e0e0;
+}
+
+.brand-icon {
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.sidebar .nav-link {
+    color: #555;
+    font-weight: 500;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 4px 15px;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #f4f6f9;
+}
+
+.sidebar .nav-link.active {
+    background-color: #eef2ff;
+    color: #4361ee;
+}
+
+.workspace {
+    min-width: 0;
+}
+
+.topbar {
+    padding: 20px 25px;
+    /*background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;*/
+}
+
+.page-content {
+    padding: 25px;
+}
+
+.kpi-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.table-custom th {
+    color: #888;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border-top: none;
+}
+
+/* Adaptación para móviles */
+@media (max-width: 575.98px) {
+    .topbar {
+        padding: 15px;
+    }
+
+    .page-content {
+        padding: 15px;
+    }
+
+    .topbar h4 {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .sidebar {
+        background-color: #fff;
+        --bs-offcanvas-bg: #fff;
+    }
+}
