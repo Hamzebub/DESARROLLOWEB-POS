@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/principal :: layout(~{::main}, 'Control de Mermas', 'mermas')}">
+      th:replace="~{layout/principal :: layout(~{::main}, 'Control de Mermas', 'mermas'
+	  , ~{},~{}
+	  )}">
 <body>
     <main>
         <div class="row">
@@ -17,7 +19,7 @@
                             </select>
                         </div>
                         <!-- Simulación del usuario en sesión -->
-                        <input type="hidden" th:field="*{usuario.idUsuario}" value="1">
+                        <input type="hidden" th:field="*{usuario.id_usuario}" value="1">
                         <div class="mb-3">
                             <label>Cantidad a descontar</label>
                             <input type="number" class="form-control" th:field="*{cantidad}" min="1" required>

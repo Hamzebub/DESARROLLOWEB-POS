@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/principal :: layout(~{::main}, 'Historial de Ventas', 'listaventas')}">
+      th:replace="~{layout/principal :: layout(~{::main}, 'Historial de Ventas', 'listaventas'
+	  , ~{},~{}
+	  )}">
 <body>
     <main>
         <div class="card p-4 shadow-sm">
