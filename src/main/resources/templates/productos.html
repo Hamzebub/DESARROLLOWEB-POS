@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/principal :: layout(~{::contenido}, 'Productos', 'productos'
-	  , ~{},~{}
-	  )}">
+      th:replace="~{layout/principal :: layout(~{::contenido}, 'Productos', 'productos', ~{::cssPagina}, ~{::jsPagina})}">
 
 <body>
     <section th:fragment="contenido">
-		
-        <!-- Formulario para guardar un producto -->
+
+        <!-- Formulario para guardar / editar un producto -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
+                <h5 class="mb-3" th:text="${editando} ? 'Editar producto' : 'Nuevo producto'"></h5>
+
                 <form th:action="@{/productos/guardar}"
                       th:object="${nuevoProducto}"
                       method="post"
                       class="row g-3 align-items-end">
 
+                    <input type="hidden" th:field="*{idProducto}">
+                    <input type="hidden" th:field="*{activo}">
+
                     <div class="col-md-2">
-                        <label for="codigo" class="form-label">Código</label>
-                        <input id="codigo" type="text" class="form-control"
+                        <label for="sku" class="form-label">SKU</label>
+                        <input id="sku" type="text" class="form-control"
                                th:field="*{sku}" placeholder="PROD-001" required>
                     </div>
 
@@ -31,10 +34,12 @@
                     <div class="col-md-3">
                         <label for="idCategoria" class="form-label">Categoría</label>
                         <select id="idCategoria" name="idCategoria" class="form-select" required>
-                            <option value="" disabled selected>Seleccione</option>
+                            <option value="" disabled
+                                    th:selected="${nuevoProducto.categoria == null}">Seleccione</option>
                             <option th:each="c : ${categorias}"
                                     th:value="${c.idCategoria}"
-                                    th:text="${c.nombre}"></option>
+                                    th:text="${c.nombre}"
+                                    th:selected="${nuevoProducto.categoria != null and nuevoProducto.categoria.idCategoria == c.idCategoria}"></option>
                         </select>
                     </div>
 
@@ -63,7 +68,12 @@
                     </div>
 
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">Guardar</button>
+                        <button type="submit" class="btn btn-primary w-100"
+                                th:text="${editando} ? 'Actualizar' : 'Guardar'">Guardar</button>
+                    </div>
+
+                    <div class="col-md-2" th:if="${editando}">
+                        <a th:href="@{/productos}" class="btn btn-outline-secondary w-100">Cancelar</a>
                     </div>
                 </form>
             </div>
@@ -76,7 +86,7 @@
                     <table class="table align-middle">
                         <thead>
                             <tr>
-                                <th>Código</th>
+                                <th>SKU</th>
                                 <th>Producto</th>
                                 <th>Categoría</th>
                                 <th>Stock</th>
@@ -84,12 +94,13 @@
                                 <th>P. compra</th>
                                 <th>P. venta</th>
                                 <th>Estado</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <tr th:each="p : ${productos}">
-                                <td th:text="${p.codigo}"></td>
+                                <td th:text="${p.sku}"></td>
                                 <td th:text="${p.nombre}"></td>
                                 <td th:text="${p.categoria != null} ? ${p.categoria.nombre} : '-'"></td>
                                 <td th:text="${p.stockActual}"></td>
@@ -103,10 +114,14 @@
                                     <span th:if="${p.stockActual gt 0 and p.stockActual ge p.stockMinimo}"
                                           class="badge bg-success">OK</span>
                                 </td>
+                                <td>
+                                    <a th:href="@{/productos/editar/{id}(id=${p.idProducto})}"
+                                       class="btn btn-sm btn-outline-primary">Editar</a>
+                                </td>
                             </tr>
 
                             <tr th:if="${#lists.isEmpty(productos)}">
-                                <td colspan="8" class="text-center text-muted">
+                                <td colspan="9" class="text-center text-muted">
                                     No hay productos registrados.
                                 </td>
                             </tr>
@@ -117,5 +132,8 @@
         </div>
 
     </section>
+
+    <th:block th:fragment="cssPagina"></th:block>
+    <th:block th:fragment="jsPagina"></th:block>
 </body>
 </html>

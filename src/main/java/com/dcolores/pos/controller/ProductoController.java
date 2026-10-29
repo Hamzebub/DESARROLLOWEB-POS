@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,17 +24,25 @@ public class ProductoController {
         this.categoriaRepository = categoriaRepository;
     }
 
-    // Muestra el formulario y la lista de productos
+    // Muestra el formulario vacío y la lista de productos
     @GetMapping("/productos")
     public String mostrarProductos(Model model) {
-        model.addAttribute("usuario", "Sra. Gloria");
-        model.addAttribute("nuevoProducto", new Producto());
-        model.addAttribute("productos", productoRepository.findAll());
-        model.addAttribute("categorias", categoriaRepository.findAll());
+        cargarDatos(model, new Producto(), false);
         return "productos";
     }
 
-    // Guarda el producto
+    // Muestra el formulario lleno con el producto a editar
+    @GetMapping("/productos/editar/{id}")
+    public String editarProducto(@PathVariable("id") Integer id, Model model) {
+        Producto producto = productoRepository.findById(id).orElse(null);
+        if (producto == null) {
+            return "redirect:/productos";
+        }
+        cargarDatos(model, producto, true);
+        return "productos";
+    }
+
+    // Guarda un producto nuevo o actualiza uno existente
     @PostMapping("/productos/guardar")
     public String guardarProducto(
             @ModelAttribute("nuevoProducto") Producto producto,
@@ -41,13 +50,21 @@ public class ProductoController {
 
         Categoria categoria = categoriaRepository.findById(idCategoria).orElse(null);
 
-        producto.setIdProducto(null);
+        // Si idProducto viene con valor, save() actualiza; si es null, inserta
         producto.setCategoria(categoria);
-        producto.setActivo(true);
+        if (producto.getActivo() == null) producto.setActivo(true);
         if (producto.getStockActual() == null) producto.setStockActual(0);
         if (producto.getStockMinimo() == null) producto.setStockMinimo(0);
 
-        //productoRepository.save(producto);
+        productoRepository.save(producto);
         return "redirect:/productos";
+    }
+
+    private void cargarDatos(Model model, Producto producto, boolean editando) {
+        model.addAttribute("usuario", "Sra. Gloria");
+        model.addAttribute("nuevoProducto", producto);
+        model.addAttribute("editando", editando);
+        model.addAttribute("productos", productoRepository.findAll());
+        model.addAttribute("categorias", categoriaRepository.findAll());
     }
 }
