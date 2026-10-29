@@ -28,8 +28,8 @@ public class ProductoController {
     public String mostrarProductos(Model model) {
         model.addAttribute("usuario", "Sra. Gloria");
         model.addAttribute("nuevoProducto", new Producto());
-        model.addAttribute("productos", productoRepository.findAll());
-        model.addAttribute("categorias", categoriaRepository.findAll());
+        //model.addAttribute("productos", productoRepository.findAll());
+        //model.addAttribute("categorias", categoriaRepository.findAll());
         return "productos";
     }
 
@@ -47,7 +47,7 @@ public class ProductoController {
         if (producto.getStockActual() == null) producto.setStockActual(0);
         if (producto.getStockMinimo() == null) producto.setStockMinimo(0);
 
-        productoRepository.save(producto);
+        //productoRepository.save(producto);
         return "redirect:/productos";
     }
 }

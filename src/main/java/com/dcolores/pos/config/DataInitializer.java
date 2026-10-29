@@ -24,7 +24,7 @@ public class DataInitializer implements CommandLineRunner {
             u.setUsername("admin");
             u.setPassword(encoder.encode("admin123"));
             u.setRol("ADMIN");
-            repo.save(u);
+            //repo.save(u);
         }
     }
 }

@@ -12,26 +12,28 @@ public class Producto {
     @Column(name = "id_producto")
     private Integer idProducto;
 
-    @Column(unique = true)
-    private String codigo;
-
-    private String nombre;
-
     @ManyToOne
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
-
+    @Column(unique = true)
+    private String sku;
+    private String codigo_barras;
+    private String nombre;
+    private String descripcion;
+    
+    @Column(name = "precio_compra")
+    private BigDecimal precioCompra;
+    @Column(name = "precio_venta")
+    private BigDecimal precioVenta;
+    
     @Column(name = "stock_actual")
     private Integer stockActual;
 
     @Column(name = "stock_minimo")
     private Integer stockMinimo;
 
-    @Column(name = "precio_compra")
-    private BigDecimal precioCompra;
 
-    @Column(name = "precio_venta")
-    private BigDecimal precioVenta;
+    
 
     private Boolean activo;
 
@@ -41,8 +43,7 @@ public class Producto {
     public Integer getIdProducto() { return idProducto; }
     public void setIdProducto(Integer idProducto) { this.idProducto = idProducto; }
 
-    public String getCodigo() { return codigo; }
-    public void setCodigo(String codigo) { this.codigo = codigo; }
+    
 
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
@@ -64,4 +65,30 @@ public class Producto {
 
     public Boolean getActivo() { return activo; }
     public void setActivo(Boolean activo) { this.activo = activo; }
+
+	public String getSku() {
+		return sku;
+	}
+
+	public void setSku(String sku) {
+		this.sku = sku;
+	}
+
+	public String getCodigo_barras() {
+		return codigo_barras;
+	}
+
+	public void setCodigo_barras(String codigo_barras) {
+		this.codigo_barras = codigo_barras;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+    
+    
 }
