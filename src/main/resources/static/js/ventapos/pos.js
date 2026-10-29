@@ -42,7 +42,7 @@ window.onload = function() {
     //startClock();
     renderCategories();
     renderProducts();
-    
+    	renderCart();
     // Event listener para búsqueda en vivo
     document.getElementById('input-search').addEventListener('input', function() {
         renderProducts();
@@ -239,8 +239,9 @@ function calculateTotals() {
 
 function renderCart() {
     const container = document.getElementById('cart-items');
-
+	
     if (cart.length === 0) {
+		
         container.innerHTML = `
             <div class="h-full flex flex-col items-center justify-center text-slate-300 py-12">
                 <i class="fa-solid fa-cart-arrow-down text-4xl mb-2"></i>
