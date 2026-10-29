@@ -11,16 +11,19 @@ const DB_CATEGORIAS = [
     { id_categoria: 4, nombre: 'Lácteos' }
 ];
 */
+
+/*
 const DB_PRODUCTOS = [
-    { id_producto: 1, id_categoria: 1, sku: 'PROD-001', codigo_barras: '7750001001', nombre: 'Inka Kola 500ml', precio_venta: 3.50, stock_actual: 45, icon: 'fa-bottle-water', color: 'text-yellow-500' },
-    { id_producto: 2, id_categoria: 1, sku: 'PROD-002', codigo_barras: '7750001002', nombre: 'Coca Cola Zero 1.5L', precio_venta: 7.20, stock_actual: 18, icon: 'fa-bottle-water', color: 'text-red-600' },
-    { id_producto: 3, id_categoria: 2, sku: 'PROD-003', codigo_barras: '7750002001', nombre: 'Papas Lays Clásicas 160g', precio_venta: 5.50, stock_actual: 30, icon: 'fa-box-open', color: 'text-amber-500' },
-    { id_producto: 4, id_categoria: 2, sku: 'PROD-004', codigo_barras: '7750002002', nombre: 'Galletas Ritz Pack x6', precio_venta: 4.20, stock_actual: 12, icon: 'fa-cookie', color: 'text-yellow-600' },
-    { id_producto: 5, id_categoria: 3, sku: 'PROD-005', codigo_barras: '7750003001', nombre: 'Arroz Extra Costeño 1kg', precio_venta: 4.80, stock_actual: 80, icon: 'fa-bowl-rice', color: 'text-slate-600' },
-    { id_producto: 6, id_categoria: 3, sku: 'PROD-006', codigo_barras: '7750003002', nombre: 'Aceite Primor Premium 1L', precio_venta: 9.90, stock_actual: 22, icon: 'fa-bottle-droplet', color: 'text-amber-400' },
-    { id_producto: 7, id_categoria: 4, sku: 'PROD-007', codigo_barras: '7750004001', nombre: 'Leche Gloria Evaporada 400g', precio_venta: 4.10, stock_actual: 60, icon: 'fa-cow', color: 'text-blue-600' },
-    { id_producto: 8, id_categoria: 4, sku: 'PROD-008', codigo_barras: '7750004002', nombre: 'Queso Edam Laive 200g', precio_venta: 11.50, stock_actual: 8, icon: 'fa-cheese', color: 'text-yellow-400' }
+    { idProducto: 1, id_categoria: 1, sku: 'PROD-001', codigo_barras: '7750001001', nombre: 'Inka Kola 500ml', precioVenta: 3.50, stock: 45, icon: 'fa-bottle-water', color: 'text-yellow-500' },
+    { idProducto: 2, id_categoria: 1, sku: 'PROD-002', codigo_barras: '7750001002', nombre: 'Coca Cola Zero 1.5L', precioVenta: 7.20, stock: 18, icon: 'fa-bottle-water', color: 'text-red-600' },
+    { idProducto: 3, id_categoria: 2, sku: 'PROD-003', codigo_barras: '7750002001', nombre: 'Papas Lays Clásicas 160g', precioVenta: 5.50, stock: 30, icon: 'fa-box-open', color: 'text-amber-500' },
+    { idProducto: 4, id_categoria: 2, sku: 'PROD-004', codigo_barras: '7750002002', nombre: 'Galletas Ritz Pack x6', precioVenta: 4.20, stock: 12, icon: 'fa-cookie', color: 'text-yellow-600' },
+    { idProducto: 5, id_categoria: 3, sku: 'PROD-005', codigo_barras: '7750003001', nombre: 'Arroz Extra Costeño 1kg', precioVenta: 4.80, stock: 80, icon: 'fa-bowl-rice', color: 'text-slate-600' },
+    { idProducto: 6, id_categoria: 3, sku: 'PROD-006', codigo_barras: '7750003002', nombre: 'Aceite Primor Premium 1L', precioVenta: 9.90, stock: 22, icon: 'fa-bottle-droplet', color: 'text-amber-400' },
+    { idProducto: 7, id_categoria: 4, sku: 'PROD-007', codigo_barras: '7750004001', nombre: 'Leche Gloria Evaporada 400g', precioVenta: 4.10, stock: 60, icon: 'fa-cow', color: 'text-blue-600' },
+    { idProducto: 8, id_categoria: 4, sku: 'PROD-008', codigo_barras: '7750004002', nombre: 'Queso Edam Laive 200g', precioVenta: 11.50, stock: 8, icon: 'fa-cheese', color: 'text-yellow-400' }
 ];
+*/
 
 // Estado Global de la App
 let activeCategory = 0;
@@ -36,7 +39,7 @@ let sessionData = {
 // INICIALIZACIÓN
 // ==========================================
 window.onload = function() {
-    startClock();
+    //startClock();
     renderCategories();
     renderProducts();
     
@@ -55,7 +58,7 @@ window.onload = function() {
                 p.codigo_barras.includes(query)
             );
             if (matched.length === 1) {
-                addToCart(matched[0].id_producto);
+                addToCart(matched[0].idProducto);
                 this.value = '';
                 renderProducts();
             }
@@ -118,7 +121,7 @@ function renderProducts() {
     const search = document.getElementById('input-search').value.toLowerCase().trim();
 
     const filtered = DB_PRODUCTOS.filter(prod => {
-        const matchesCat = activeCategory === 0 || prod.id_categoria === activeCategory;
+        const matchesCat = activeCategory === 0 || prod.categoria.idCategoria=== activeCategory;
         const matchesSearch = prod.nombre.toLowerCase().includes(search) || 
                               prod.sku.toLowerCase().includes(search) || 
                               prod.codigo_barras.includes(search);
@@ -136,23 +139,23 @@ function renderProducts() {
     }
 
     container.innerHTML = filtered.map(prod => `
-        <div onclick="addToCart(${prod.id_producto})" 
+        <div onclick="addToCart(${prod.idProducto})" 
             class="bg-white border border-slate-200 hover:border-indigo-400 rounded-xl p-3 cursor-pointer transition-all hover:shadow-md flex flex-col justify-between group">
             <div>
                 <div class="flex justify-between items-start mb-2">
                     <span class="text-[10px] font-mono bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded">${prod.sku}</span>
-                    <span class="text-[10px] font-semibold ${prod.stock_actual < 15 ? 'text-rose-500 bg-rose-50' : 'text-emerald-600 bg-emerald-50'} px-1.5 py-0.5 rounded">
-                        Stk: ${prod.stock_actual}
+                    <span class="text-[10px] font-semibold ${prod.stockActual < 15 ? 'text-rose-500 bg-rose-50' : 'text-emerald-600 bg-emerald-50'} px-1.5 py-0.5 rounded">
+                        Stk: ${prod.stockActual}
                     </span>
                 </div>
                 <div class="text-center py-2">
-                    <i class="fa-solid ${prod.icon} ${prod.color} text-2xl group-hover:scale-110 transition-transform"></i>
+                    <i class="fa-solid fa-solid fa-box text-amber-500 text-2xl group-hover:scale-110 transition-transform"></i>
                 </div>
                 <h4 class="text-xs font-semibold text-slate-700 line-clamp-2 leading-tight">${prod.nombre}</h4>
             </div>
             <div class="mt-2 pt-2 border-t border-slate-100 flex justify-between items-center">
                 <span class="text-xs text-slate-400">Precio:</span>
-                <span class="text-sm font-bold text-indigo-600">S/ ${prod.precio_venta.toFixed(2)}</span>
+                <span class="text-sm font-bold text-indigo-600">S/ ${prod.precioVenta.toFixed(2)}</span>
             </div>
         </div>
     `).join('');
@@ -162,26 +165,26 @@ function renderProducts() {
 // LÓGICA DEL CARRITO (detalles_venta)
 // ==========================================
 function addToCart(idProducto) {
-    const product = DB_PRODUCTOS.find(p => p.id_producto === idProducto);
+    const product = DB_PRODUCTOS.find(p => p.idProducto === idProducto);
     if (!product) return;
 
-    const existingItem = cart.find(item => item.id_producto === idProducto);
+    const existingItem = cart.find(item => item.idProducto === idProducto);
 
     if (existingItem) {
-        if (existingItem.cantidad + 1 > product.stock_actual) {
-            alert(`Stock insuficiente. Solo hay ${product.stock_actual} unidades disponibles.`);
+        if (existingItem.cantidad + 1 > product.stockActual) {
+            alert(`Stock insuficiente. Solo hay ${product.stockActual} unidades disponibles.`);
             return;
         }
         existingItem.cantidad += 1;
         existingItem.subtotal = existingItem.cantidad * existingItem.precio_unitario;
     } else {
         cart.push({
-            id_producto: product.id_producto,
+            idProducto: product.idProducto,
             sku: product.sku,
             nombre: product.nombre,
-            precio_unitario: product.precio_venta,
+            precio_unitario: product.precioVenta,
             cantidad: 1,
-            subtotal: product.precio_venta
+            subtotal: product.precioVenta
         });
     }
 
@@ -189,10 +192,10 @@ function addToCart(idProducto) {
 }
 
 function updateCartQuantity(idProducto, delta) {
-    const item = cart.find(i => i.id_producto === idProducto);
+    const item = cart.find(i => i.idProducto === idProducto);
     if (!item) return;
 
-    const product = DB_PRODUCTOS.find(p => p.id_producto === idProducto);
+    const product = DB_PRODUCTOS.find(p => p.idProducto === idProducto);
     const newQty = item.cantidad + delta;
 
     if (newQty <= 0) {
@@ -200,8 +203,8 @@ function updateCartQuantity(idProducto, delta) {
         return;
     }
 
-    if (newQty > product.stock_actual) {
-        alert(`Stock alcanzado. Límite: ${product.stock_actual}`);
+    if (newQty > product.stock) {
+        alert(`Stock alcanzado. Límite: ${product.stock}`);
         return;
     }
 
@@ -211,7 +214,7 @@ function updateCartQuantity(idProducto, delta) {
 }
 
 function removeFromCart(idProducto) {
-    cart = cart.filter(i => i.id_producto !== idProducto);
+    cart = cart.filter(i => i.idProducto !== idProducto);
     renderCart();
 }
 
@@ -253,13 +256,13 @@ function renderCart() {
                     <span class="text-[10px] text-slate-400">S/ ${item.precio_unitario.toFixed(2)} c/u</span>
                 </div>
                 <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-md">
-                    <button onclick="updateCartQuantity(${item.id_producto}, -1)" class="w-5 h-5 bg-white hover:bg-slate-200 text-slate-700 rounded flex items-center justify-center text-xs font-bold shadow-sm">-</button>
+                    <button onclick="updateCartQuantity(${item.idProducto}, -1)" class="w-5 h-5 bg-white hover:bg-slate-200 text-slate-700 rounded flex items-center justify-center text-xs font-bold shadow-sm">-</button>
                     <span class="text-xs font-bold w-5 text-center font-mono">${item.cantidad}</span>
-                    <button onclick="updateCartQuantity(${item.id_producto}, 1)" class="w-5 h-5 bg-white hover:bg-slate-200 text-slate-700 rounded flex items-center justify-center text-xs font-bold shadow-sm">+</button>
+                    <button onclick="updateCartQuantity(${item.idProducto}, 1)" class="w-5 h-5 bg-white hover:bg-slate-200 text-slate-700 rounded flex items-center justify-center text-xs font-bold shadow-sm">+</button>
                 </div>
                 <div class="text-right min-w-[60px]">
                     <span class="text-xs font-bold text-slate-800 block">S/ ${item.subtotal.toFixed(2)}</span>
-                    <button onclick="removeFromCart(${item.id_producto})" class="text-[10px] text-rose-500 hover:text-rose-700">Eliminar</button>
+                    <button onclick="removeFromCart(${item.idProducto})" class="text-[10px] text-rose-500 hover:text-rose-700">Eliminar</button>
                 </div>
             </div>
         `).join('');
@@ -406,7 +409,7 @@ function completeSale() {
         },
         // Tabla: detalles_venta
         detalles: cart.map(item => ({
-            id_producto: item.id_producto,
+            idProducto: item.idProducto,
             cantidad: item.cantidad,
             precio_unitario: item.precio_unitario,
             subtotal: item.subtotal
@@ -415,7 +418,7 @@ function completeSale() {
         pagos: payments,
         // Kardex automático a insertar en PostgreSQL
         kardex_movimientos: cart.map(item => ({
-            id_producto: item.id_producto,
+            idProducto: item.idProducto,
             id_usuario: sessionData.id_usuario,
             tipo_movimiento: 'VENTA',
             cantidad: item.cantidad,
@@ -434,8 +437,8 @@ function completeSale() {
 
     // Actualizar stock local simulado
     cart.forEach(item => {
-        const prod = DB_PRODUCTOS.find(p => p.id_producto === item.id_producto);
-        if (prod) prod.stock_actual -= item.cantidad;
+        const prod = DB_PRODUCTOS.find(p => p.idProducto === item.idProducto);
+        if (prod) prod.stock -= item.cantidad;
     });
 }
 

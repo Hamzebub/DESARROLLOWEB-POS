@@ -299,7 +299,8 @@
 	<th:block th:fragment="jsPagina">
 		<script th:inline="javascript">
 		    //const DB_CATEGORIAS = /*[[${categorias}]]*/ [];
-			
+			const DB_PRODUCTOS= /*[[${productos}]]*/ [];
+			console.log(DB_PRODUCTOS);
 		    
 		</script>
 		<script th:src="@{/js/ventapos/pos.js}" defer></script>

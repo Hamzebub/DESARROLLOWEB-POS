@@ -89,7 +89,7 @@
 
                         <tbody>
                             <tr th:each="p : ${productos}">
-                                <td th:text="${p.codigo}"></td>
+                                <td th:text="${p.sku}"></td>
                                 <td th:text="${p.nombre}"></td>
                                 <td th:text="${p.categoria != null} ? ${p.categoria.nombre} : '-'"></td>
                                 <td th:text="${p.stockActual}"></td>

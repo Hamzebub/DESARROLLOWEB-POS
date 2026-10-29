@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.dcolores.pos.repository.CategoriaRepository;
+import com.dcolores.pos.repository.ProductoRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,8 +14,10 @@ import java.util.List;
 @Controller
 public class PosController {
 	private final CategoriaRepository categoriaRepository;
-	public PosController(CategoriaRepository categoriaRepository) {
+	private final ProductoRepository productoRepository;
+	public PosController(CategoriaRepository categoriaRepository,ProductoRepository productorepository) {
         this.categoriaRepository = categoriaRepository;
+        this.productoRepository= productorepository;
     }
 
 	@GetMapping("/")
@@ -36,6 +39,7 @@ public class PosController {
     @GetMapping("/ventas")
     public String mostrarMenuVentas(Model model) {
     		model.addAttribute("categorias", categoriaRepository.findAll());
+    		model.addAttribute("productos", productoRepository.findAll());
         return "ventapos";
     }
 
