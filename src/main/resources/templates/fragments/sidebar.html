@@ -1,4 +1,3 @@
-
 <aside th:fragment="sidebar"
        class="offcanvas-lg offcanvas-start sidebar"
        tabindex="-1"
@@ -11,11 +10,9 @@
         </h5>
         <button type="button"
                 class="btn-close"
-				data-bs-dismiss="offcanvas"
-				data-bs-target="#sidebarMenu"
-                aria-label="Cerrar menú"
-				
-				>
+                data-bs-dismiss="offcanvas"
+                data-bs-target="#sidebarMenu"
+                aria-label="Cerrar menú">
         </button>
     </div>
 
@@ -28,6 +25,7 @@
 
         <nav class="nav flex-column mb-auto">
 
+            <!-- Módulo 8: DASHBOARD (Tuyo) -->
             <a th:href="@{/menu}"
                class="nav-link"
                th:classappend="${seccion == 'dashboard'} ? ' active' : ''">
@@ -35,6 +33,7 @@
                 Dashboard
             </a>
 
+            <!-- Módulos de tus compañeros -->
             <a th:href="@{/inventario}"
                class="nav-link"
                th:classappend="${seccion == 'inventario'} ? ' active' : ''">
@@ -56,11 +55,20 @@
                 Ventas (POS)
             </a>
 
+            <!-- Módulo 7: MERMAS (Tuyo) -->
             <a th:href="@{/mermas}"
                class="nav-link"
                th:classappend="${seccion == 'mermas'} ? ' active' : ''">
                 <i class="bi bi-exclamation-triangle me-2"></i>
                 Mermas
+            </a>
+
+            <!-- Módulo 9: LISTA DE VENTAS (Tuyo - AGREGADO) -->
+            <a th:href="@{/listaventa}"
+               class="nav-link"
+               th:classappend="${seccion == 'listaventa'} ? ' active' : ''">
+                <i class="bi bi-receipt me-2"></i>
+                Lista de Ventas
             </a>
 
         </nav>

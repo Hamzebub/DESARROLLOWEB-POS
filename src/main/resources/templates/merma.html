@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/principal :: layout(~{::main}, 'Control de Mermas', 'mermas')}">
+<body>
+    <main>
+        <div class="row">
+            <!-- Formulario de Registro -->
+            <div class="col-md-4">
+                <div class="card p-3 shadow-sm">
+                    <h5 class="fw-bold mb-3">Registrar Merma</h5>
+                    <form th:action="@{/merma/guardar}" th:object="${nuevaMerma}" method="post">
+                        <div class="mb-3">
+                            <label>Producto</label>
+                            <select class="form-select" th:field="*{producto.idProducto}" required>
+                                <option value="">Seleccione...</option>
+                                <option th:each="p : ${productos}" th:value="${p.idProducto}" th:text="${p.nombre}"></option>
+                            </select>
+                        </div>
+                        <!-- Simulación del usuario en sesión -->
+                        <input type="hidden" th:field="*{usuario.idUsuario}" value="1">
+                        <div class="mb-3">
+                            <label>Cantidad a descontar</label>
+                            <input type="number" class="form-control" th:field="*{cantidad}" min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Motivo</label>
+                            <select class="form-select" th:field="*{motivo}" required>
+                                <option value="Vencido">Vencido</option>
+                                <option value="Dañado">Dañado</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">Descontar Stock</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tabla Historial de Mermas -->
+            <div class="col-md-8">
+                <div class="card p-3 shadow-sm">
+                    <h5 class="fw-bold mb-3">Historial de Mermas</h5>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Motivo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="m : ${mermas}">
+                                <td th:text="${#temporals.format(m.fechaHora, 'dd/MM/yyyy')}"></td>
+                                <td th:text="${m.producto.nombre}"></td>
+                                <td class="text-danger fw-bold" th:text="${'- ' + m.cantidad}"></td>
+                                <td><span class="badge bg-warning text-dark" th:text="${m.motivo}"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
