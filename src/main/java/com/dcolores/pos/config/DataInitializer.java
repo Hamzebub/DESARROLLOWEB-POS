@@ -3,12 +3,12 @@ package com.dcolores.pos.config;
 import com.dcolores.pos.entity.Usuario;
 import com.dcolores.pos.repository.UsuarioRepository;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@Component
-public class DataInitializer implements CommandLineRunner {
-
+/*@Component*/
+public class DataInitializer /*implements CommandLineRunner*/ {
+	/*
     private final UsuarioRepository repo;
     private final PasswordEncoder encoder;
 
@@ -16,9 +16,11 @@ public class DataInitializer implements CommandLineRunner {
         this.repo = repo;
         this.encoder = encoder;
     }
+    
 
     @Override
     public void run(String... args) {
+    		
         if (repo.findByUsername("admin").isEmpty()) {
             Usuario u = new Usuario();
             u.setUsername("admin");
@@ -26,5 +28,7 @@ public class DataInitializer implements CommandLineRunner {
             u.setRol("ADMIN");
             //repo.save(u);
         }
+        
     }
+    */
 }
