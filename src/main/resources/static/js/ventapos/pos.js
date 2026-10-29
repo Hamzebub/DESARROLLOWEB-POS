@@ -97,7 +97,6 @@ function renderCategories(){
 	let buttonnuevo=container.querySelector(`[data-cat="${activeCategory}"]`);
 	buttonnuevo.classList.remove('bg-slate-200','text-slate-700','hover:bg-slate-300');
 	buttonnuevo.classList.add('bg-indigo-600','text-white','shadow-sm');
-	
 
 }
 
