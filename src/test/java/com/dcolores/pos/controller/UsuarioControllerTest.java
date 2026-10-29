@@ -33,7 +33,7 @@ class UsuarioControllerTest {
 
     @BeforeEach
     void configurarMockMvc() {
-        // La vista real corresponde al paso 4; estas pruebas verifican rutas y modelos.
+        // Estas pruebas aíslan las rutas; UsuarioViewTest verifica la vista Thymeleaf real.
         mockMvc = standaloneSetup(new UsuarioController(usuarioService))
                 .setViewResolvers(new InternalResourceViewResolver("/test-views/", ".html"))
                 .build();
