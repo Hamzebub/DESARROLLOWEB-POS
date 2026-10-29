@@ -33,6 +33,13 @@
                 Dashboard
             </a>
 
+            <a th:href="@{/usuarios}"
+               class="nav-link"
+               th:classappend="${seccion == 'usuarios'} ? ' active' : ''">
+                <i class="bi bi-people me-2"></i>
+                Usuarios
+            </a>
+
             <!-- Módulos de tus compañeros -->
             <a th:href="@{/inventario}"
                class="nav-link"
@@ -72,7 +79,7 @@
             <!-- Módulo 9: LISTA DE VENTAS (Tuyo - AGREGADO) -->
             <a th:href="@{/listaventa}"
                class="nav-link"
-               th:classappend="${seccion == 'listaventas'} ? ' active' : ''">
+               th:classappend="${seccion == 'listaventa' or seccion == 'listaventas'} ? ' active' : ''">
                 <i class="bi bi-receipt me-2"></i>
                 Lista de Ventas
             </a>
