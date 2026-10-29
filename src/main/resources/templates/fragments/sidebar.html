@@ -47,6 +47,12 @@
                 <i class="bi bi-tags me-2"></i>
                 Categorías
             </a>
+			<a th:href="@{/productos}"
+               class="nav-link"
+               th:classappend="${seccion == 'productos'} ? ' active' : ''">
+                <i class="bi bi-basket me-2"></i>
+                Productos
+            </a>
 
             <a th:href="@{/ventas}"
                class="nav-link"

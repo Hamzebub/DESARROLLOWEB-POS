@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/principal :: layout(~{::contenido}, 'Categorías', 'categorias')}">
+      th:replace="~{layout/principal :: layout(~{::contenido}, 'Categorías', 'categorias'
+	  , ~{},~{}
+	  )}">
 
 <body>
     <section th:fragment="contenido">

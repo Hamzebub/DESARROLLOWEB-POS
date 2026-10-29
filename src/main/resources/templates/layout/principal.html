@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
-      th:fragment="layout(contenido, titulo, seccion)">
+      th:fragment="layout(contenido, titulo, seccion,cssPagina, jsPagina)">
 
 <head>
     <meta charset="UTF-8">
@@ -20,6 +20,7 @@
           rel="stylesheet">
 
     <link rel="stylesheet" th:href="@{/css/principal.css}">
+	<th:block th:replace="${cssPagina}"></th:block>
 </head>
 
 <body>
@@ -50,6 +51,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
+	<th:block th:replace="${jsPagina}"></th:block>
 
 </body>
 </html>

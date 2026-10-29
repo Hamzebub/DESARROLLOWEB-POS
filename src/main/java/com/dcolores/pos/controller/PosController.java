@@ -8,11 +8,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.dcolores.pos.repository.CategoriaRepository;
+import com.dcolores.pos.repository.ProductoRepository;
+
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
 public class PosController {
+	private final CategoriaRepository categoriaRepository;
+	private final ProductoRepository productoRepository;
+	public PosController(CategoriaRepository categoriaRepository,ProductoRepository productorepository) {
+        this.categoriaRepository = categoriaRepository;
+        this.productoRepository= productorepository;
+    }
 
     @Autowired(required = false)
     private VentaRepository ventaRepository;
@@ -34,6 +43,13 @@ public class PosController {
     @PostMapping("/login")
     public String procesarLogin() {
         return "redirect:/menu"; 
+    }
+    
+    @GetMapping("/ventas")
+    public String mostrarMenuVentas(Model model) {
+    		model.addAttribute("categorias", categoriaRepository.findAll());
+    		model.addAttribute("productos", productoRepository.findAll());
+        return "ventapos";
     }
 
     // 2. VISTA DE MENÚ / DASHBOARD (TU MÓDULO 8)
