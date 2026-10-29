@@ -5,11 +5,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.dcolores.pos.repository.CategoriaRepository;
+
 import java.util.Arrays;
 import java.util.List;
 
 @Controller
 public class PosController {
+	private final CategoriaRepository categoriaRepository;
+	public PosController(CategoriaRepository categoriaRepository) {
+        this.categoriaRepository = categoriaRepository;
+    }
 
 	@GetMapping("/")
     public String redirigir() {
@@ -25,6 +31,12 @@ public class PosController {
     public String procesarLogin() {
         // Redirige al menú principal tras iniciar sesión
         return "redirect:/menu"; 
+    }
+    
+    @GetMapping("/ventas")
+    public String mostrarMenuVentas(Model model) {
+    		model.addAttribute("categorias", categoriaRepository.findAll());
+        return "ventapos";
     }
 
     // 2. VISTA DE MENÚ / DASHBOARD

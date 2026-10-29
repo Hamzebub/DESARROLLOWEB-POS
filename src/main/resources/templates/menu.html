@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/principal :: layout(~{::main}, 'Dashboard Principal', 'dashboard')}">
+      th:replace="~{layout/principal :: layout(~{::main}, 'Dashboard Principal', 'dashboard'
+	  , ~{},~{}
+	  )}">
 
 <body>
 
