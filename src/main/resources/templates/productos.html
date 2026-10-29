@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/principal :: layout(~{::contenido}, 'Productos', 'productos')}
-	  	  ,~{::cssPagina},~{::jsPagina})}">
+      th:replace="~{layout/principal :: layout(~{::contenido}, 'Productos', 'productos'
+	  , ~{},~{}
+	  )}">
 
 <body>
     <section th:fragment="contenido">
-
+		
         <!-- Formulario para guardar un producto -->
         <div class="card shadow-sm mb-4">
             <div class="card-body">
@@ -18,7 +19,7 @@
                     <div class="col-md-2">
                         <label for="codigo" class="form-label">Código</label>
                         <input id="codigo" type="text" class="form-control"
-                               th:field="*{codigo}" placeholder="PROD-001" required>
+                               th:field="*{sku}" placeholder="PROD-001" required>
                     </div>
 
                     <div class="col-md-4">

@@ -28,8 +28,8 @@ public class ProductoController {
     public String mostrarProductos(Model model) {
         model.addAttribute("usuario", "Sra. Gloria");
         model.addAttribute("nuevoProducto", new Producto());
-        //model.addAttribute("productos", productoRepository.findAll());
-        //model.addAttribute("categorias", categoriaRepository.findAll());
+        model.addAttribute("productos", productoRepository.findAll());
+        model.addAttribute("categorias", categoriaRepository.findAll());
         return "productos";
     }
 
