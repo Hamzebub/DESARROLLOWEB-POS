@@ -1,6 +1,7 @@
 package com.dcolores.pos.controller;
 
 import com.dcolores.pos.entity.Usuario;
+import com.dcolores.pos.repository.VentaRepository;
 import com.dcolores.pos.service.UsuarioService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UsuarioController.class)
+@WebMvcTest({UsuarioController.class, VentaController.class})
 class UsuarioViewTest {
 
     @Autowired
@@ -27,6 +28,9 @@ class UsuarioViewTest {
 
     @MockitoBean
     private UsuarioService usuarioService;
+
+    @MockitoBean
+    private VentaRepository ventaRepository;
 
     @Test
     void registroVacioRenderizaElLayoutYRequiereContrasena() throws Exception {
@@ -121,6 +125,37 @@ class UsuarioViewTest {
         assertTrue(html.contains("&lt;script&gt;"));
         assertFalse(html.contains("<script>alert("));
         assertFalse(html.contains("alert alert-success"));
+    }
+
+    @Test
+    void fusionConservaTodosLosEnlacesDelSidebarEnElOrdenAcordado() throws Exception {
+        when(usuarioService.listarTodos()).thenReturn(List.of());
+
+        String html = renderizar("/usuarios");
+        String nav = html.substring(html.indexOf("<nav "), html.indexOf("</nav>"));
+        List<String> rutas = Pattern.compile("href=\"([^\"]+)\"").matcher(nav).results()
+                .map(resultado -> resultado.group(1)).toList();
+
+        assertEquals(List.of("/menu", "/usuarios", "/inventario", "/categorias", "/productos",
+                "/ventas", "/mermas", "/listaventa"), rutas);
+        assertTrue(enlaceActivo(html, "/usuarios"));
+        assertFalse(enlaceActivo(html, "/listaventa"));
+    }
+
+    @Test
+    void listaDeVentasConservaSuVistaYElResalteTrasLaFusion() throws Exception {
+        when(ventaRepository.findAll()).thenReturn(List.of());
+
+        String html = renderizar("/listaventa");
+
+        assertTrue(html.contains("Lista General de Ventas"));
+        assertTrue(enlaceActivo(html, "/listaventa"));
+        assertFalse(enlaceActivo(html, "/usuarios"));
+    }
+
+    private boolean enlaceActivo(String html, String ruta) {
+        return Pattern.compile("<a\\b(?=[^>]*href=\"" + Pattern.quote(ruta)
+                + "\")(?=[^>]*class=\"[^\"]*\\bactive\\b)[^>]*>").matcher(html).find();
     }
 
     private String renderizar(String ruta) throws Exception {
