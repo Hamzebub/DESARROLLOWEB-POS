@@ -20,7 +20,7 @@ public class VentaRequestDTO {
 	public static class VentaDTO {
         private Long id_usuario;
         private Long id_caja;
-        private String numero_comprobante;
+        private String serie_comprobante;
         private String tipo_comprobante;
         private BigDecimal subtotal;
         private BigDecimal igv;
@@ -32,8 +32,8 @@ public class VentaRequestDTO {
         public void setId_usuario(Long id_usuario) { this.id_usuario = id_usuario; }
         public Long getId_caja() { return id_caja; }
         public void setId_caja(Long id_caja) { this.id_caja = id_caja; }
-        public String getNumero_comprobante() { return numero_comprobante; }
-        public void setNumero_comprobante(String numero_comprobante) { this.numero_comprobante = numero_comprobante; }
+        public String getSerie_comprobante() { return serie_comprobante; }
+        public void setSerie_comprobante(String serie_comprobante) { this.serie_comprobante = serie_comprobante; }
         public String getTipo_comprobante() { return tipo_comprobante; }
         public void setTipo_comprobante(String tipo_comprobante) { this.tipo_comprobante = tipo_comprobante; }
         public BigDecimal getSubtotal() { return subtotal; }
@@ -47,14 +47,14 @@ public class VentaRequestDTO {
     }
 	
 	public static class DetalleVentaDTO {
-        private Long id_producto;
+        private int id_producto;
         private Integer cantidad;
         private BigDecimal precio_unitario;
         private BigDecimal subtotal;
         
         // Getters y Setters
-        public Long getId_producto() { return id_producto; }
-        public void setId_producto(Long id_producto) { this.id_producto = id_producto; }
+        public int getId_producto() { return id_producto; }
+        public void setId_producto(int id_producto) { this.id_producto = id_producto; }
         public Integer getCantidad() { return cantidad; }
         public void setCantidad(Integer cantidad) { this.cantidad = cantidad; }
         public BigDecimal getPrecio_unitario() { return precio_unitario; }

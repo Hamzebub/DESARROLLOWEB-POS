@@ -30,8 +30,9 @@ let activeCategory = 0;
 let cart = []; // Almacena ítems para la tabla detalles_venta
 let payments = []; // Almacena ítems para la tabla pagos
 let sessionData = {
-    id_caja: 1042,
-    id_usuario: 1, // Cajero
+    //id_caja: 1042,
+    id_caja: caja.idCaja,
+    id_usuario: 5, // Cajero
     usuario_nombre: 'Carlos Mendoza'
 };
 
@@ -42,7 +43,7 @@ window.onload = function() {
     //startClock();
     renderCategories();
     renderProducts();
-    	renderCart();
+    renderCart();
     // Event listener para búsqueda en vivo
     document.getElementById('input-search').addEventListener('input', function() {
         renderProducts();
@@ -52,9 +53,9 @@ window.onload = function() {
     document.getElementById('input-search').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             const query = this.value.trim().toLowerCase();
-            const matched = DB_PRODUCTOS.filter(p => 
-                p.nombre.toLowerCase().includes(query) || 
-                p.sku.toLowerCase().includes(query) || 
+            const matched = DB_PRODUCTOS.filter(p =>
+                p.nombre.toLowerCase().includes(query) ||
+                p.sku.toLowerCase().includes(query) ||
                 p.codigo_barras.includes(query)
             );
             if (matched.length === 1) {
@@ -74,6 +75,14 @@ function startClock() {
     }, 1000);
 }
 
+
+function cambiarComprobante(selectElement){
+		const opcionSeleccionada = selectElement.options[selectElement.selectedIndex];
+		
+		document.getElementById('input-serie-comprobante').value=opcionSeleccionada.dataset.serie;
+		
+}
+
 // ==========================================
 // CATÁLOGOS Y FILTROS
 // ==========================================
@@ -81,25 +90,24 @@ function renderCategories2() {
     const container = document.getElementById('categories-bar');
     container.innerHTML = DB_CATEGORIAS.map(cat => `
         <button onclick="selectCategory(${cat.idCategoria})" 
-            class="px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
-                activeCategory === cat.idCategoria 
-                ? 'bg-indigo-600 text-white shadow-sm' 
-                : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-            }">
+            class="px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${activeCategory === cat.idCategoria
+            ? 'bg-indigo-600 text-white shadow-sm'
+            : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+        }">
             ${cat.nombre}
         </button>
     `).join('');
 }
 
-function renderCategories(){
-	const container = document.getElementById('categories-bar');
-	let button=container.querySelector('.bg-indigo-600');
-	button.classList.remove('bg-indigo-600','text-white','shadow-sm');
-	button.classList.add('bg-slate-200','text-slate-700','hover:bg-slate-300');
-	
-	let buttonnuevo=container.querySelector(`[data-cat="${activeCategory}"]`);
-	buttonnuevo.classList.remove('bg-slate-200','text-slate-700','hover:bg-slate-300');
-	buttonnuevo.classList.add('bg-indigo-600','text-white','shadow-sm');
+function renderCategories() {
+    const container = document.getElementById('categories-bar');
+    let button = container.querySelector('.bg-indigo-600');
+    button.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+    button.classList.add('bg-slate-200', 'text-slate-700', 'hover:bg-slate-300');
+
+    let buttonnuevo = container.querySelector(`[data-cat="${activeCategory}"]`);
+    buttonnuevo.classList.remove('bg-slate-200', 'text-slate-700', 'hover:bg-slate-300');
+    buttonnuevo.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
 
 }
 
@@ -121,10 +129,10 @@ function renderProducts() {
     const search = document.getElementById('input-search').value.toLowerCase().trim();
 
     const filtered = DB_PRODUCTOS.filter(prod => {
-        const matchesCat = activeCategory === 0 || prod.categoria.idCategoria=== activeCategory;
-        const matchesSearch = prod.nombre.toLowerCase().includes(search) || 
-                              prod.sku.toLowerCase().includes(search) || 
-                              prod.codigo_barras.includes(search);
+        const matchesCat = activeCategory === 0 || prod.categoria.idCategoria === activeCategory;
+        const matchesSearch = prod.nombre.toLowerCase().includes(search) ||
+            prod.sku.toLowerCase().includes(search) ||
+            prod.codigo_barras.includes(search);
         return matchesCat && matchesSearch;
     });
 
@@ -239,9 +247,9 @@ function calculateTotals() {
 
 function renderCart() {
     const container = document.getElementById('cart-items');
-	
+
     if (cart.length === 0) {
-		
+
         container.innerHTML = `
             <div class="h-full flex flex-col items-center justify-center text-slate-300 py-12">
                 <i class="fa-solid fa-cart-arrow-down text-4xl mb-2"></i>
@@ -352,7 +360,7 @@ function updatePaymentSummary() {
         const vuelto = Math.abs(balance);
         balanceLabel.innerText = balance === 0 ? 'S/ 0.00' : `Vuelto: S/ ${vuelto.toFixed(2)}`;
         balanceLabel.className = 'font-mono font-bold text-sm text-indigo-600';
-        
+
         // Habilitar botón de confirmar
         btnComplete.disabled = false;
         btnComplete.className = 'px-5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs transition-all flex items-center gap-2 cursor-pointer shadow-lg';
@@ -391,16 +399,16 @@ function completeSale() {
     const totals = calculateTotals();
     const clienteSelect = document.getElementById('select-cliente');
     const comprobanteSelect = document.getElementById('select-comprobante');
-    const numComprobante = document.getElementById('input-num-comprobante').value;
+    const serieComprobante = document.getElementById('input-serie-comprobante').value;
 
     // Construir payload de demostración para enviar al backend Spring Boot
     const payloadVenta = {
         // Tabla: ventas
-        venta: {
+        ventas: {
             id_usuario: sessionData.id_usuario,
             id_caja: sessionData.id_caja,
             id_cliente: parseInt(clienteSelect.value),
-            numero_comprobante: numComprobante,
+            serie_comprobante: serieComprobante,
             tipo_comprobante: comprobanteSelect.value,
             fecha_hora: new Date().toISOString(),
             subtotal: parseFloat(totals.subtotal.toFixed(2)),
@@ -409,8 +417,8 @@ function completeSale() {
             estado: 'COMPLETADO'
         },
         // Tabla: detalles_venta
-        detalles: cart.map(item => ({
-            idProducto: item.idProducto,
+        detalles_venta: cart.map(item => ({
+            id_producto: item.idProducto,
             cantidad: item.cantidad,
             precio_unitario: item.precio_unitario,
             subtotal: item.subtotal
@@ -423,11 +431,14 @@ function completeSale() {
             id_usuario: sessionData.id_usuario,
             tipo_movimiento: 'VENTA',
             cantidad: item.cantidad,
-            referencia_origen: numComprobante
+            referencia_origen: serieComprobante
         }))
     };
 
-    // Mostrar el resultado JSON
+
+    procesarPago(payloadVenta);
+    /*
+        // Mostrar el resultado JSON
     document.getElementById('json-output').innerText = JSON.stringify(payloadVenta, null, 2);
 
     closePaymentModal();
@@ -441,6 +452,42 @@ function completeSale() {
         const prod = DB_PRODUCTOS.find(p => p.idProducto === item.idProducto);
         if (prod) prod.stock -= item.cantidad;
     });
+    */
+}
+
+async function procesarPago(payloadVenta) {
+
+    try {
+        const response = await fetch('/ventas/guardar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payloadVenta)
+        });
+
+        const resultado = await response.json();
+
+        if (response.ok) {
+            console.log(cart);
+			console.log(DB_PRODUCTOS[0]);
+            cart.forEach(item => {
+                const prod = DB_PRODUCTOS.find(p => p.idProducto === item.idProducto);
+                if (prod) prod.stockActual -= item.cantidad;
+            });
+            closePaymentModal();
+			closeReceiptModal()
+			alert(resultado.mensaje);
+            // renderCart(); // Llama a tu función para refrescar la interfaz del carrito
+            // location.reload(); // O recarga la vista para actualizar el stock en pantalla
+        } else {
+            alert('Error al procesar la venta: ' + resultado.error);
+        }
+
+    } catch (error) {
+        console.error('Error de red:', error);
+        alert('Ocurrió un error inesperado al conectar con el servidor.');
+    }
 }
 
 function closeReceiptModal() {
@@ -454,10 +501,12 @@ function closeReceiptModal() {
     renderProducts();
 
     // Incrementar correlativo
-    const numInput = document.getElementById('input-num-comprobante');
+    /*
+	const numInput = document.getElementById('input-serie-comprobante');
     const parts = numInput.value.split('-');
     const nextNum = parseInt(parts[1]) + 1;
     numInput.value = `${parts[0]}-${String(nextNum).padStart(7, '0')}`;
+	*/
 }
 
 function copyToClipboard() {

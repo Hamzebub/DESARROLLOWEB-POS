@@ -13,20 +13,20 @@ import jakarta.persistence.Table;
 public class Pagos {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_pago;
+    private Long id_pago;
 	
-	private Integer id_venta;
+	private Long id_venta;
 	
-	public Integer getId_pago() {
+	public Long getId_pago() {
 		return id_pago;
 	}
-	public void setId_pago(Integer id_pago) {
+	public void setId_pago(Long id_pago) {
 		this.id_pago = id_pago;
 	}
-	public Integer getId_venta() {
+	public Long getId_venta() {
 		return id_venta;
 	}
-	public void setId_venta(Integer id_venta) {
+	public void setId_venta(Long id_venta) {
 		this.id_venta = id_venta;
 	}
 	public String getMetodo_pago() {

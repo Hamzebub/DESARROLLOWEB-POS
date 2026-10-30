@@ -1,26 +1,42 @@
 package com.dcolores.pos.controller;
 
 import com.dcolores.pos.repository.VentaRepository;
+import com.dcolores.pos.service.VentaService;
 import com.dcolores.pos.repository.MermaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dcolores.pos.entity.Caja;
+import com.dcolores.pos.entity.Venta;
+import com.dcolores.pos.model.VentaRequestDTO;
+import com.dcolores.pos.repository.CajaRepository;
 import com.dcolores.pos.repository.CategoriaRepository;
 import com.dcolores.pos.repository.ProductoRepository;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PosController {
 	private final CategoriaRepository categoriaRepository;
 	private final ProductoRepository productoRepository;
-	public PosController(CategoriaRepository categoriaRepository,ProductoRepository productorepository) {
+	private final CajaRepository cajaRepository;
+	private final VentaService ventaService;
+	public PosController(CategoriaRepository categoriaRepository,ProductoRepository productorepository
+			,CajaRepository cajarepository
+			,VentaService ventaService
+			) {
         this.categoriaRepository = categoriaRepository;
         this.productoRepository= productorepository;
+        this.cajaRepository = cajarepository;
+        this.ventaService= ventaService;
     }
 
     @Autowired(required = false)
@@ -49,7 +65,23 @@ public class PosController {
     public String mostrarMenuVentas(Model model) {
     		model.addAttribute("categorias", categoriaRepository.findAll());
     		model.addAttribute("productos", productoRepository.findAll());
+    		Long idUsuario= 5L;
+    		Optional<Caja> c = cajaRepository.findCajaAbiertaPorUsuario(idUsuario, "ABIERTA");
+    		model.addAttribute("caja", c);
+    		   		
+    		
         return "ventapos";
+    }
+    
+    @PostMapping("/ventas/guardar")
+    @ResponseBody // <--- ¡La clave! Esto le dice a Spring que devuelva JSON puro y no busque una vista HTML
+    public ResponseEntity<?> guardarVenta(@RequestBody VentaRequestDTO request) {
+        try {
+            ventaService.registrarVentaCompleta(request);
+            return ResponseEntity.ok().body("{\"mensaje\": \"¡Venta registrada y stock actualizado con éxito!\"}");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("{\"error\": \"" + e.getMessage() + "\"}");
+        }
     }
 
     // 2. VISTA DE MENÚ / DASHBOARD (TU MÓDULO 8)

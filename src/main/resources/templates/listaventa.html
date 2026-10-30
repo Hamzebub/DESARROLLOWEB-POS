@@ -21,13 +21,13 @@
                 </thead>
                 <tbody>
                     <tr th:each="venta : ${ventas}">
-                        <td class="fw-bold" th:text="${venta.numeroComprobante}"></td>
+                        <td class="fw-bold" th:text="|${venta.serieComprobante}-${venta.numeroComprobante}|"></td>
                         <td th:text="${#temporals.format(venta.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
                         <td th:text="${venta.usuario.nombre}"></td>
                         <td class="fw-bold text-success" th:text="'S/ ' + ${venta.total}"></td>
                         <td>
-                            <span class="badge bg-success" th:if="${venta.estado == 'Completado'}">Completado</span>
-                            <span class="badge bg-danger" th:if="${venta.estado == 'Anulado'}">Anulado</span>
+                            <span class="badge bg-success" th:if="${venta.estado == 'COMPLETADO'}">Completado</span>
+                            <span class="badge bg-danger" th:if="${venta.estado == 'ANULADO'}">Anulado</span>
                         </td>
                     </tr>
                 </tbody>

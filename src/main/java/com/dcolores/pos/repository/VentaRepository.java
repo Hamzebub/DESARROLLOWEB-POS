@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VentaRepository extends JpaRepository<Venta, Long> {
@@ -16,4 +17,6 @@ public interface VentaRepository extends JpaRepository<Venta, Long> {
     // Consulta para el Dashboard: Últimas ventas
     @Query(value = "SELECT * FROM ventas ORDER BY fecha_hora DESC LIMIT 5", nativeQuery = true)
     List<Venta> obtenerUltimasVentas();
+    
+    Optional<Venta> findFirstBySerieComprobanteOrderByIdVentaDesc(String serieComprobante);
 }
