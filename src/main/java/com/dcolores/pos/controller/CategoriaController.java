@@ -2,21 +2,27 @@ package com.dcolores.pos.controller;
 
 import com.dcolores.pos.entity.Categoria;
 import com.dcolores.pos.repository.CategoriaRepository;
+import com.dcolores.pos.repository.ProductoRepository;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @Controller
 public class CategoriaController {
 
     private final CategoriaRepository categoriaRepository;
+    private final ProductoRepository productoRepository;
 
-    public CategoriaController(CategoriaRepository categoriaRepository) {
+    public CategoriaController(CategoriaRepository categoriaRepository,ProductoRepository productoRepository) {
         this.categoriaRepository = categoriaRepository;
+        this.productoRepository = productoRepository;
     }
 
     // Muestra el formulario y la lista desde PostgreSQL
@@ -57,7 +63,7 @@ public class CategoriaController {
         return "categorias";
     }
     
-    @PostMapping("/categorias/estado/{id}")
+    /*@PostMapping("/categorias/estado/{id}")
     public String cambiarEstadoCategoria(@PathVariable Integer id) {
         Categoria categoria = categoriaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
@@ -65,6 +71,35 @@ public class CategoriaController {
         categoria.setActivo(!Boolean.TRUE.equals(categoria.getActivo()));
         categoriaRepository.save(categoria);
 
+        return "redirect:/categorias";
+    }*/
+    @PostMapping("/categorias/estado/{id}")
+    public String cambiarEstadoCategoria(@PathVariable Integer id,
+    										RedirectAttributes redirectAttributes) {
+
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Categoría no encontrada"));
+
+        // Bloquear solo cuando se intenta desactivar
+        if (Boolean.TRUE.equals(categoria.getActivo())) {
+            long cantidadProductos =
+                    productoRepository.countByCategoria_IdCategoria(id);
+
+            if (cantidadProductos > 0) {
+                redirectAttributes.addFlashAttribute(
+                        "error",
+                        "No se puede desactivar esta categoría porque tiene "
+                        + cantidadProductos + " producto(s) asociado(s)."
+                );
+                return "redirect:/categorias";
+            }
+        }
+
+        categoria.setActivo(!Boolean.TRUE.equals(categoria.getActivo()));
+        categoriaRepository.save(categoria);
+
+        redirectAttributes.addFlashAttribute("mensaje", "Estado actualizado.");
         return "redirect:/categorias";
     }
     
