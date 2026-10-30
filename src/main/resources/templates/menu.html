@@ -2,7 +2,7 @@
 <html lang="es"
       xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/principal :: layout(~{::main}, 'Dashboard Principal', 'dashboard'
-	  , ~{},~{}
+	  , ~{},~{::jsPagina}
 	  )}">
 
 <body>
@@ -63,15 +63,19 @@
                     </thead>
 
                     <tbody>
-                        <tr th:each="venta : ${ultimasVentas}">
-                            <td th:text="${venta.hora}">00:00</td>
-                            <td th:text="${venta.producto}">Producto</td>
+                        <tr th:each="venta : ${ultimasVentasDTO}">
+                            <td th:text="${#temporals.format(venta.fechaHora, 'dd/MM/yyyy HH:mm')}">00:00</td>
+                            <td th:text="${venta.productosConcatenados}">Producto</td>
                             <td class="fw-bold"
                                 th:text="${venta.total}">S/ 0.00</td>
                             <td>
-                                <span class="badge"
-                                      th:classappend="${venta.medioPago == 'Yape' ? ' bg-info' : (venta.medioPago == 'Efectivo' ? ' bg-success' : ' bg-secondary')}"
-                                      th:text="${venta.medioPago}">
+                                <span th:each="pago : ${venta.pagos}" 
+								class="badge"
+								th:classappend="${pago.metodoPago == 'EFECTIVO' ? 'bg-success' : 
+								                (pago.metodoPago == 'YAPE_PLIN' ? 'bg-info text-dark' : 
+								                (pago.metodoPago == 'TARJETA' ? 'bg-primary' : 'bg-secondary'))}"
+								
+                                      th:text="${pago.metodoPago}">
                                     Pago
                                 </span>
                             </td>
@@ -83,6 +87,17 @@
         </div>
 
     </main>
+	
+	<th:block th:fragment="jsPagina">
+		<script th:inline="javascript">
+		    //const DB_CATEGORIAS = /*[[${categorias}]]*/ [];
+			const DBB= /*[[${ultimasVentasDTO}]]*/ [];
+			
+			console.log(DBB);
+		    
+		</script>
+		
+	</th:block>
 
 </body>
 </html>

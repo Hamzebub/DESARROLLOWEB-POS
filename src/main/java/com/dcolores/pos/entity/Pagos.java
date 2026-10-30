@@ -2,6 +2,7 @@ package com.dcolores.pos.entity;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,7 +16,8 @@ public class Pagos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_pago;
 	
-	private Long id_venta;
+	@Column(name = "id_venta")
+	private Long idVenta;
 	
 	public Long getId_pago() {
 		return id_pago;
@@ -23,11 +25,12 @@ public class Pagos {
 	public void setId_pago(Long id_pago) {
 		this.id_pago = id_pago;
 	}
-	public Long getId_venta() {
-		return id_venta;
+	
+	public Long getIdVenta() {
+		return idVenta;
 	}
-	public void setId_venta(Long id_venta) {
-		this.id_venta = id_venta;
+	public void setIdVenta(Long idVenta) {
+		this.idVenta = idVenta;
 	}
 	public String getMetodo_pago() {
 		return metodo_pago;

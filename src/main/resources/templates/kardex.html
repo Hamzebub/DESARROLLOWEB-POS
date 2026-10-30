@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/principal :: layout(~{::contenido}, 'Kardex', 'kardex'
+	  , ~{},~{}
+	  )}">
+
+<body>
+	<section th:fragment="contenido">
+
+
+
+		<!-- Tabla de kardex -->
+		<div class="card shadow-sm">
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table align-middle">
+						<thead>
+							<tr>
+								<th>Producto</th>
+								<th>Stock anterior</th>
+								<th>Stock posterior</th>
+
+								<th>Fecha y hora</th>
+								<th>Usuario</th>
+								<th>Movimiento</th>
+
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr th:each="kardex : ${kardexs}">
+								<td th:text="${kardex.Producto.nombre}"></td>
+								<td th:text="${kardex.stockAnterior}"></td>
+								<td th:text="${kardex.stockPosterior}"></td>
+
+								<td th:text="${#temporals.format(kardex.fechaHora, 'dd/MM/yyyy HH:mm')}"></td>
+								<td th:text="${kardex.Usuario.Nombre}"></td>
+
+								<td th:text="${kardex.tipoMovimiento}"></td>
+
+
+
+
+							</tr>
+
+							<tr th:if="${#lists.isEmpty(kardexs)}">
+								<td colspan="4" class="text-center text-muted">
+									No hay movimientos registrados.
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</section>
+</body>
+
+</html>

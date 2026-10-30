@@ -2,7 +2,7 @@ package com.dcolores.pos.entity;
 
 import java.math.BigDecimal;
 
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +19,8 @@ public class DetalleVenta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_detalle;
 	
-	private Long id_Venta;
+	@Column(name = "id_Venta")
+	private Long idVenta;
 	@ManyToOne
     @JoinColumn(name = "id_producto")
     private Producto producto;
@@ -33,11 +34,13 @@ public class DetalleVenta {
 	public void setId_detalle(Integer id_detalle) {
 		this.id_detalle = id_detalle;
 	}
-	public Long getId_Venta() {
-		return id_Venta;
+	
+	
+	public Long getIdVenta() {
+		return idVenta;
 	}
-	public void setId_Venta(Long id_Venta) {
-		this.id_Venta = id_Venta;
+	public void setIdVenta(Long idVenta) {
+		this.idVenta = idVenta;
 	}
 	public Producto getProducto() {
 		return producto;

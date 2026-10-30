@@ -39,11 +39,7 @@ public class PosController {
         this.ventaService= ventaService;
     }
 
-    @Autowired(required = false)
-    private VentaRepository ventaRepository;
-
-    @Autowired(required = false)
-    private MermaRepository mermaRepository;
+    
 
     @GetMapping("/")
     public String redirigir() {
@@ -84,33 +80,10 @@ public class PosController {
         }
     }
 
-    // 2. VISTA DE MENÚ / DASHBOARD (TU MÓDULO 8)
-    @GetMapping("/menu")
-    public String mostrarMenu(Model model) {
-        model.addAttribute("usuario", "Sra. Gloria");
-
-        // Obtenemos datos reales desde la BD si existen, si no, valores base
-        Double ventasHoy = (ventaRepository != null) ? ventaRepository.obtenerTotalVentasDelDia() : 0.0;
-        long totalMermas = (mermaRepository != null) ? mermaRepository.count() : 0;
-
-        model.addAttribute("ventasDelDia", "S/ " + (ventasHoy != null ? String.format("%.2f", ventasHoy) : "0.00"));
-        model.addAttribute("productosStock", "1,842"); // Lo maneja el módulo de Productos
-        model.addAttribute("mermasDelMes", totalMermas + " items");
-        model.addAttribute("ingresosMes", "S/ 48,720.00");
-
-        // Lista de últimas ventas para la tabla inferior del Dashboard
-        List<VentaMock> ultimasVentas = Arrays.asList(
-            new VentaMock("10:45 AM", "Fideos Don Vittorio x2, Leche Gloria x1", "S/ 18.50", "Yape"),
-            new VentaMock("10:32 AM", "Cuaderno Stanford A4, Lapicero Pilot", "S/ 12.00", "Efectivo"),
-            new VentaMock("10:15 AM", "Arroz Costeño 5kg, Aceite Primor 1L", "S/ 38.90", "Tarjeta"),
-            new VentaMock("09:50 AM", "Gaseosa Inka Kola 3L, Papa Lays Familiar", "S/ 21.50", "Yape")
-        );
-        model.addAttribute("ultimasVentas", ultimasVentas);
-
-        return "menu";
-    }
+    
 
     // 3. VISTA DE INVENTARIO (De tus compañeros)
+    /*
     @GetMapping("/inventario")
     public String mostrarInventario(Model model) {
         model.addAttribute("usuario", "Sra. Gloria");
@@ -122,7 +95,7 @@ public class PosController {
         );
         model.addAttribute("productos", productos);
         return "inventario";
-    }
+    }*/
 
     // Renombramos estas clases internas a "Mock" para que NO colisionen con tu Entity Venta.java
     public static class VentaMock {

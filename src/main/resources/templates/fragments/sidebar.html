@@ -76,6 +76,13 @@
                 <i class="bi bi-exclamation-triangle me-2"></i>
                 Mermas
             </a>
+			
+			<a th:href="@{/kardex}"
+			   class="nav-link"
+			   th:classappend="${seccion == 'kardex'} ? ' active' : ''">
+			    <i class="bi bi-journal-bookmark me-2"></i>
+			    Kardex
+			</a>
 
             <!-- Módulo 9: LISTA DE VENTAS (Tuyo - AGREGADO) -->
             <a th:href="@{/listaventa}"

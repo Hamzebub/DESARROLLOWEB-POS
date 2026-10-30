@@ -9,7 +9,8 @@ import jakarta.persistence.*;
 public class Kardex {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_kardex;
+	@Column(name = "id_kardex")
+    private Long idKardex;
 
 	@ManyToOne
     @JoinColumn(name = "id_producto", nullable = false)
@@ -40,12 +41,14 @@ public class Kardex {
 	@Column(name = "fecha_hora",insertable = false, updatable = false)
     private LocalDateTime fechaHora;
 
-	public Long getId_kardex() {
-		return id_kardex;
+	
+
+	public Long getIdKardex() {
+		return idKardex;
 	}
 
-	public void setId_kardex(Long id_kardex) {
-		this.id_kardex = id_kardex;
+	public void setIdKardex(Long idKardex) {
+		this.idKardex = idKardex;
 	}
 
 	public Producto getProducto() {

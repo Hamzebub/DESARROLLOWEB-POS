@@ -1,11 +1,16 @@
 package com.dcolores.pos.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.condition.ProducesRequestCondition;
 
 import com.dcolores.pos.entity.*;
+import com.dcolores.pos.model.VentaDashboardDTO;
 import com.dcolores.pos.model.VentaRequestDTO;
 import com.dcolores.pos.repository.*;
 
@@ -29,6 +34,70 @@ public class VentaService {
         this.pagoRepository = pagoRepository;
         this.productoRepository = productoRepository;
 		this.kardexRepository = kardexRepository;
+    }
+    
+    public List<VentaDashboardDTO> obtenerHistorialCompleto() {
+        // 1. Traemos todas las ventas (Consulta 1)
+        List<Venta> ventas = ventaRepository.obtenerUltimasVentas();
+        if (ventas.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        List<Long> idsVentas = ventas.stream().map(Venta::getIdVenta).toList();
+
+        // 2. Traemos todos los detalles y pagos de golpe usando los IDs (Consultas 2 y 3)
+        List<DetalleVenta> todosDetalles = detalleVentaRepository.findByIdVentaIn(idsVentas);
+        List<Pagos> todosPagos = pagoRepository.findByIdVentaIn(idsVentas);
+
+        // 3. Agrupamos en mapas por ID de venta para un acceso instantáneo O(1)
+        Map<Long, List<DetalleVenta>> mapaDetalles = todosDetalles.stream()
+            .collect(Collectors.groupingBy(d -> d.getIdVenta()));
+
+        Map<Long, List<Pagos>> mapaPagos = todosPagos.stream()
+            .collect(Collectors.groupingBy(p -> p.getIdVenta() ));
+
+        // 4. Construimos la lista final de nuestro DTO
+        List<VentaDashboardDTO> historial = new ArrayList<>();
+        
+        for (Venta v : ventas) {
+        		VentaDashboardDTO dto = new VentaDashboardDTO();
+            dto.setIdVenta(v.getIdVenta());
+            dto.setSerieComprobante(v.getSerieComprobante());
+            dto.setNumeroComprobante(v.getNumeroComprobante());
+            dto.setFechaHora(v.getFechaHora());
+            dto.setTotal(v.getTotal());
+            dto.setEstado(v.getEstado());
+
+            // Mapeamos los detalles de esta venta específica
+            List<VentaDashboardDTO.DetalleDItemDTO> listaDetallesDto = mapaDetalles.getOrDefault(v.getIdVenta(), new ArrayList<>())
+                .stream()
+                .map(d -> new VentaDashboardDTO.DetalleDItemDTO(
+                    d.getProducto().getNombre(),
+                    d.getCantidad(), 
+                    d.getSubtotal()
+                ))
+                .toList();
+            dto.setDetalles(listaDetallesDto);
+
+            // Mapeamos los pagos de esta venta específica
+            List<VentaDashboardDTO.PagoDItemDTO> listaPagosDto = mapaPagos.getOrDefault(v.getIdVenta(), new ArrayList<>())
+                .stream()
+                .map(p -> new VentaDashboardDTO.PagoDItemDTO(
+                    p.getMetodo_pago(), 
+                    p.getMonto()
+                ))
+                .toList();
+            dto.setPagos(listaPagosDto);
+            
+            String productosConcatenados = mapaDetalles.getOrDefault(v.getIdVenta(), new ArrayList<>())
+            	    .stream()
+            	    .map(d -> d.getProducto().getNombre() + " (x" + d.getCantidad() + ")")
+            	    .collect(Collectors.joining(", "));
+            dto.setProductosConcatenados(productosConcatenados);
+            historial.add(dto);
+        }
+
+        return historial;
     }
     
     @Transactional
@@ -80,7 +149,7 @@ public class VentaService {
         // 2. Guardar los Detalles de Venta y descontar Stock
         for (VentaRequestDTO.DetalleVentaDTO detDTO : dto.getDetalles_venta()) {
             DetalleVenta detalle = new DetalleVenta();
-            detalle.setId_Venta(ventaGuardada.getIdVenta()); // Relación con la venta creada
+            detalle.setIdVenta(ventaGuardada.getIdVenta()); // Relación con la venta creada
             detalle.setProducto(new Producto());
             detalle.getProducto().setIdProducto(detDTO.getId_producto());
             detalle.setCantidad(detDTO.getCantidad());
@@ -120,7 +189,7 @@ public class VentaService {
         // 3. Guardar los Pagos (Soporte Multi-Pago: Efectivo, Yape, Tarjeta)
         for (VentaRequestDTO.PagoDTO pagoDTO : dto.getPagos()) {
             Pagos pago = new Pagos();
-            pago.setId_venta(ventaGuardada.getIdVenta()); // Relación con la venta creada
+            pago.setIdVenta(ventaGuardada.getIdVenta()); // Relación con la venta creada
             pago.setMetodo_pago(pagoDTO.getMetodo_pago());
             pago.setMonto(pagoDTO.getMonto());
             pago.setReferencia_transaccion(comprobante);
