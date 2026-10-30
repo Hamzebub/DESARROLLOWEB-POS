@@ -17,7 +17,9 @@ public class Producto {
     private Categoria categoria;
     @Column(unique = true)
     private String sku;
-    private String codigo_barras;
+    
+    @Column(name = "codigo_barras")
+    private String codigoBarras;
     private String nombre;
     private String descripcion;
     
@@ -74,12 +76,14 @@ public class Producto {
 		this.sku = sku;
 	}
 
-	public String getCodigo_barras() {
-		return codigo_barras;
+	
+
+	public String getCodigoBarras() {
+		return codigoBarras;
 	}
 
-	public void setCodigo_barras(String codigo_barras) {
-		this.codigo_barras = codigo_barras;
+	public void setCodigoBarras(String codigoBarras) {
+		this.codigoBarras = codigoBarras;
 	}
 
 	public String getDescripcion() {
