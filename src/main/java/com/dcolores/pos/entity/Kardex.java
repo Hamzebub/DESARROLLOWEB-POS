@@ -11,27 +11,106 @@ public class Kardex {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_kardex;
 
+	@ManyToOne
+    @JoinColumn(name = "id_producto", nullable = false)
+    private Producto producto;
     
-    private Long id_producto;
 
+	@ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
     
-    private Long id_usuario;
 
     // Tipo de movimiento (Ej: 'VENTA', 'COMPRA', 'ENTREGA_INICIAL', 'ANULACION')
-    private String tipo_movimiento;
+	@Column(name = "tipo_movimiento")
+    private String tipoMovimiento;
 
-    
+	
     private Integer cantidad;
 
-    
-    private Integer stock_anterior;
+	@Column(name = "stock_anterior")
+    private Integer stockAnterior;
 
-    
-    private Integer stock_posterior;
+	@Column(name = "stock_posterior")
+    private Integer stockPosterior;
 
-    
-    private String referencia_origen;
+	@Column(name = "referencia_origen")
+    private String referenciaOrigen;
 
-    
-    private LocalDateTime fecha_hora;
+	@Column(name = "fecha_hora",insertable = false, updatable = false)
+    private LocalDateTime fechaHora;
+
+	public Long getId_kardex() {
+		return id_kardex;
+	}
+
+	public void setId_kardex(Long id_kardex) {
+		this.id_kardex = id_kardex;
+	}
+
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setProducto(Producto producto) {
+		this.producto = producto;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getTipoMovimiento() {
+		return tipoMovimiento;
+	}
+
+	public void setTipoMovimiento(String tipoMovimiento) {
+		this.tipoMovimiento = tipoMovimiento;
+	}
+
+	public Integer getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public Integer getStockAnterior() {
+		return stockAnterior;
+	}
+
+	public void setStockAnterior(Integer stockAnterior) {
+		this.stockAnterior = stockAnterior;
+	}
+
+	public Integer getStockPosterior() {
+		return stockPosterior;
+	}
+
+	public void setStockPosterior(Integer stockPosterior) {
+		this.stockPosterior = stockPosterior;
+	}
+
+	public String getReferenciaOrigen() {
+		return referenciaOrigen;
+	}
+
+	public void setReferenciaOrigen(String referenciaOrigen) {
+		this.referenciaOrigen = referenciaOrigen;
+	}
+
+	public LocalDateTime getFechaHora() {
+		return fechaHora;
+	}
+
+	public void setFechaHora(LocalDateTime fechaHora) {
+		this.fechaHora = fechaHora;
+	}
+	
+	
 }
