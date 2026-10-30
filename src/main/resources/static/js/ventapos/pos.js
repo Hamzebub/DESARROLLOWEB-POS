@@ -14,14 +14,14 @@ const DB_CATEGORIAS = [
 
 /*
 const DB_PRODUCTOS = [
-    { idProducto: 1, id_categoria: 1, sku: 'PROD-001', codigo_barras: '7750001001', nombre: 'Inka Kola 500ml', precioVenta: 3.50, stock: 45, icon: 'fa-bottle-water', color: 'text-yellow-500' },
-    { idProducto: 2, id_categoria: 1, sku: 'PROD-002', codigo_barras: '7750001002', nombre: 'Coca Cola Zero 1.5L', precioVenta: 7.20, stock: 18, icon: 'fa-bottle-water', color: 'text-red-600' },
-    { idProducto: 3, id_categoria: 2, sku: 'PROD-003', codigo_barras: '7750002001', nombre: 'Papas Lays Clásicas 160g', precioVenta: 5.50, stock: 30, icon: 'fa-box-open', color: 'text-amber-500' },
-    { idProducto: 4, id_categoria: 2, sku: 'PROD-004', codigo_barras: '7750002002', nombre: 'Galletas Ritz Pack x6', precioVenta: 4.20, stock: 12, icon: 'fa-cookie', color: 'text-yellow-600' },
-    { idProducto: 5, id_categoria: 3, sku: 'PROD-005', codigo_barras: '7750003001', nombre: 'Arroz Extra Costeño 1kg', precioVenta: 4.80, stock: 80, icon: 'fa-bowl-rice', color: 'text-slate-600' },
-    { idProducto: 6, id_categoria: 3, sku: 'PROD-006', codigo_barras: '7750003002', nombre: 'Aceite Primor Premium 1L', precioVenta: 9.90, stock: 22, icon: 'fa-bottle-droplet', color: 'text-amber-400' },
-    { idProducto: 7, id_categoria: 4, sku: 'PROD-007', codigo_barras: '7750004001', nombre: 'Leche Gloria Evaporada 400g', precioVenta: 4.10, stock: 60, icon: 'fa-cow', color: 'text-blue-600' },
-    { idProducto: 8, id_categoria: 4, sku: 'PROD-008', codigo_barras: '7750004002', nombre: 'Queso Edam Laive 200g', precioVenta: 11.50, stock: 8, icon: 'fa-cheese', color: 'text-yellow-400' }
+    { idProducto: 1, id_categoria: 1, sku: 'PROD-001', codigoBarras: '7750001001', nombre: 'Inka Kola 500ml', precioVenta: 3.50, stock: 45, icon: 'fa-bottle-water', color: 'text-yellow-500' },
+    { idProducto: 2, id_categoria: 1, sku: 'PROD-002', codigoBarras: '7750001002', nombre: 'Coca Cola Zero 1.5L', precioVenta: 7.20, stock: 18, icon: 'fa-bottle-water', color: 'text-red-600' },
+    { idProducto: 3, id_categoria: 2, sku: 'PROD-003', codigoBarras: '7750002001', nombre: 'Papas Lays Clásicas 160g', precioVenta: 5.50, stock: 30, icon: 'fa-box-open', color: 'text-amber-500' },
+    { idProducto: 4, id_categoria: 2, sku: 'PROD-004', codigoBarras: '7750002002', nombre: 'Galletas Ritz Pack x6', precioVenta: 4.20, stock: 12, icon: 'fa-cookie', color: 'text-yellow-600' },
+    { idProducto: 5, id_categoria: 3, sku: 'PROD-005', codigoBarras: '7750003001', nombre: 'Arroz Extra Costeño 1kg', precioVenta: 4.80, stock: 80, icon: 'fa-bowl-rice', color: 'text-slate-600' },
+    { idProducto: 6, id_categoria: 3, sku: 'PROD-006', codigoBarras: '7750003002', nombre: 'Aceite Primor Premium 1L', precioVenta: 9.90, stock: 22, icon: 'fa-bottle-droplet', color: 'text-amber-400' },
+    { idProducto: 7, id_categoria: 4, sku: 'PROD-007', codigoBarras: '7750004001', nombre: 'Leche Gloria Evaporada 400g', precioVenta: 4.10, stock: 60, icon: 'fa-cow', color: 'text-blue-600' },
+    { idProducto: 8, id_categoria: 4, sku: 'PROD-008', codigoBarras: '7750004002', nombre: 'Queso Edam Laive 200g', precioVenta: 11.50, stock: 8, icon: 'fa-cheese', color: 'text-yellow-400' }
 ];
 */
 
@@ -56,7 +56,7 @@ window.onload = function() {
             const matched = DB_PRODUCTOS.filter(p =>
                 p.nombre.toLowerCase().includes(query) ||
                 p.sku.toLowerCase().includes(query) ||
-                p.codigo_barras.includes(query)
+                (p.codigoBarras+"").includes(query)
             );
             if (matched.length === 1) {
                 addToCart(matched[0].idProducto);
@@ -132,7 +132,7 @@ function renderProducts() {
         const matchesCat = activeCategory === 0 || prod.categoria.idCategoria === activeCategory;
         const matchesSearch = prod.nombre.toLowerCase().includes(search) ||
             prod.sku.toLowerCase().includes(search) ||
-            prod.codigo_barras.includes(search);
+            (prod.codigoBarras+"").includes(search);
         return matchesCat && matchesSearch;
     });
 
