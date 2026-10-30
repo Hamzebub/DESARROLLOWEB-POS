@@ -38,9 +38,11 @@
                     </div>
 
                     <div class="col-md-1">
-                        <button type="submit" class="btn btn-primary w-100">
-                            Guardar
-                        </button>
+						<input type="hidden" th:field="*{idCategoria}">
+						<button type="submit" class="btn btn-primary w-100"
+						        th:text="${editando} ? 'Guardar cambios' : 'Guardar'">
+						    Guardar
+						</button>
                     </div>
                 </form>
             </div>
@@ -57,6 +59,7 @@
                                 <th>Nombre de categoría</th>
                                 <th>Descripción</th>
                                 <th>Estado</th>
+							   <th>Acciones</th>
                             </tr>
                         </thead>
 
@@ -71,10 +74,20 @@
                                           th:text="${categoria.activo} ? 'Activo' : 'Inactivo'">                                       
                                     </span>
                                 </td>
-                                <td>
-                                    <!-- Aquí puedes agregar los botones Editar y Eliminar -->
-                                    
-                                </td>
+								<td>
+								    <div class="d-flex gap-2">
+								        <a th:href="@{/categorias/editar/{id}(id=${categoria.idCategoria})}"
+								           class="btn btn-outline-primary btn-sm">Editar</a>
+
+								        <form th:action="@{/categorias/estado/{id}(id=${categoria.idCategoria})}"
+								              method="post">
+								            <button type="submit" class="btn btn-sm"
+								                    th:classappend="${categoria.activo == true ? 'btn-outline-danger' : 'btn-outline-success'}"
+								                    th:text="${categoria.activo == true ? 'Desactivar' : 'Activar'}">
+								            </button>
+								        </form>
+								    </div>
+								</td>
                             </tr>
 
                             <tr th:if="${#lists.isEmpty(categorias)}">
