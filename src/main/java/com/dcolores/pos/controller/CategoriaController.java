@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 @Controller
@@ -23,7 +24,7 @@ public class CategoriaController {
     public String mostrarCategorias(Model model) {
         model.addAttribute("usuario", "Sra. Gloria");
         model.addAttribute("nuevaCategoria", new Categoria());
-        model.addAttribute("categorias", categoriaRepository.findAll());
+        model.addAttribute("categorias", categoriaRepository.findAllByOrderByIdCategoriaAsc());
         return "categorias";
     }
 
@@ -33,9 +34,37 @@ public class CategoriaController {
             @ModelAttribute("nuevaCategoria") Categoria categoria) {
 
         // El ID se genera automáticamente al guardar.
-        categoria.setIdCategoria(null);
-        categoria.setActivo(true);
+        //categoria.setIdCategoria(null);
+        if (categoria.getActivo() == null) {
+            categoria.setActivo(true);
+        }
+
         categoriaRepository.save(categoria);
+        return "redirect:/categorias";
+    }
+    
+    @GetMapping("/categorias/editar/{id}")
+    public String cargarCategoriaParaEditar(@PathVariable Integer id, Model model) {
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No existe la categoría con ID " + id));
+
+        model.addAttribute("usuario", "Sra. Gloria");
+        model.addAttribute("nuevaCategoria", categoria);
+        model.addAttribute("categorias", categoriaRepository.findAllByOrderByIdCategoriaAsc());
+        model.addAttribute("editando", true);
+
+        return "categorias";
+    }
+    
+    @PostMapping("/categorias/estado/{id}")
+    public String cambiarEstadoCategoria(@PathVariable Integer id) {
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada"));
+
+        categoria.setActivo(!Boolean.TRUE.equals(categoria.getActivo()));
+        categoriaRepository.save(categoria);
+
         return "redirect:/categorias";
     }
     
