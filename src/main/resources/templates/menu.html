@@ -66,8 +66,8 @@
                         <tr th:each="venta : ${ultimasVentasDTO}">
                             <td th:text="${#temporals.format(venta.fechaHora, 'dd/MM/yyyy HH:mm')}">00:00</td>
                             <td th:text="${venta.productosConcatenados}">Producto</td>
-                            <td class="fw-bold"
-                                th:text="${venta.total}">S/ 0.00</td>
+                            <td class="fw-bold text-success"
+                                th:text="'S/ ' + ${venta.total}">S/ 0.00</td>
                             <td>
                                 <span th:each="pago : ${venta.pagos}" 
 								class="badge"
