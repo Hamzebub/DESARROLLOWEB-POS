@@ -47,7 +47,15 @@
                 </form>
             </div>
         </div>
+		<div th:if="${error}"
+		     class="alert alert-danger alert-auto-hide"
+		     th:text="${error}">
+		</div>
 
+		<div th:if="${mensaje}"
+		     class="alert alert-success alert-auto-hide"
+		     th:text="${mensaje}">
+		</div>
         <!-- Tabla de categorías -->
         <div class="card shadow-sm">
             <div class="card-body">
@@ -104,3 +112,12 @@
     </section>
 </body>
 </html>
+<script>
+    setTimeout(() => {
+        document.querySelectorAll(".alert-auto-hide").forEach(alerta => {
+            alerta.style.transition = "opacity 0.5s";
+            alerta.style.opacity = "0";
+            setTimeout(() => alerta.remove(), 500);
+        });
+    }, 3000);
+</script>
